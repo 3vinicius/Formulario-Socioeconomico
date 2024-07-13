@@ -94,15 +94,80 @@ inputRefeicaoMenosGosta.grid(column=3, row=4, padx=10, pady=5)
 inputRefeicaoMenosGosta.current()
 
 
+
+
+
+## Output DeDados
+# Frame para o Treeview
+frameTreeview = tk.Frame(janela)
+frameTreeview.grid(row=5, column=0, columnspan=5, padx=10, pady=10, sticky="nsew")
+
+# Dados das colunas para o Treeview
+dadosColunas = ("nome", "idade", "estadoCivil", "numeroFilhos", "sexo", "empregado",
+                 "naoConsome", "class", "maisGosta", "menGosta")
+
+# Criação do Treeview
+treeMedidas = ttk.Treeview(frameTreeview, columns=dadosColunas, show='headings', selectmode='browse')
+
+# Configuração das barras de rolagem
+verScrlbar = ttk.Scrollbar(frameTreeview, orient="vertical", command=treeMedidas.yview)
+verScrlbar.pack(side='right', fill='y')
+horScrlbar = ttk.Scrollbar(frameTreeview, orient="horizontal", command=treeMedidas.xview)
+horScrlbar.pack(side='bottom', fill='x')
+
+# Configuração do Treeview para usar as barras de rolagem
+treeMedidas.configure(yscrollcommand=verScrlbar.set, xscrollcommand=horScrlbar.set)
+
+# Configuração dos headings (cabeçalhos)
+treeMedidas.heading("nome", text="Nome")
+treeMedidas.heading("idade", text="Idade")
+treeMedidas.heading("estadoCivil", text="Estado Civil")
+treeMedidas.heading("numeroFilhos", text="Números de Filhos")
+treeMedidas.heading("sexo", text="Sexo")
+treeMedidas.heading("empregado", text="Você está empregado")
+treeMedidas.heading("naoConsome", text="Qual refeição você não pode consumir")
+treeMedidas.heading("class", text="Classificação da merenda")
+treeMedidas.heading("maisGosta", text="Qual refeição você mais gosta?")
+treeMedidas.heading("menGosta", text="Qual refeição você menos gosta?")
+
+# Configuração das colunas
+treeMedidas.column("nome", minwidth=0, width=100)
+treeMedidas.column("idade", minwidth=0, width=40)
+treeMedidas.column("estadoCivil", minwidth=0, width=100)
+treeMedidas.column("numeroFilhos", minwidth=0, width=110)
+treeMedidas.column("sexo", minwidth=0, width=70)
+treeMedidas.column("empregado", minwidth=0, width=120)
+treeMedidas.column("naoConsome", minwidth=0, width=180)
+treeMedidas.column("class", minwidth=0, width=150)
+treeMedidas.column("maisGosta", minwidth=0, width=180)
+treeMedidas.column("menGosta", minwidth=0, width=200)
+
+# Empacotamento do Treeview
+treeMedidas.pack(padx=10, pady=10, fill='both', expand=True)
+
+
+
+
 ## Frame para os botões
 frameBotoes = tk.Frame(janela)
-frameBotoes.grid(row=10, column=0, columnspan=4, pady=20, sticky="ew")
+frameBotoes.grid(row=10, column=0, columnspan=5, pady=20, sticky="ew")
+
 
 
 # Botões
 tk.Button(frameBotoes, text='Sair', command=janela.quit).pack(side='left',padx=5)
-tk.Button(frameBotoes, text='Exibir Dados', command=lambda: exibirDados(
-    varNome, varIdade, varEstadoCivil, varEmpregado, varRefeicaoNaoConsumir, varClassMerenda, varRefeicaoMaisGosta, varRefeicaoMenosGosta
-)).pack(side='left',padx=5)
+(tk.Button(frameBotoes, text='Exibir Dados', command=lambda:inserirDados(varNome, varIdade, varEstadoCivil, varNumFilhos,
+                                                                 varEmpregado, varRefeicaoNaoConsumir, varClassMerenda,
+                                                                 varRefeicaoMaisGosta,
+                                                                 varRefeicaoMenosGosta,treeMedidas))
+ .pack(side='left',padx=5))
+
+(tk.Button(frameBotoes, text='Excluir Linha', command=lambda:deletarLinha(treeMedidas))
+ .pack(side='left',padx=5))
+
+
+#MockDeDados
+mockInserirDados(treeMedidas)
+
 
 janela.mainloop()
